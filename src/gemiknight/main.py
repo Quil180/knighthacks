@@ -62,18 +62,16 @@ def main():
             print(f"\n[{current_mode.name} MODE] Say '{wake_word}' to issue a command.")
 
             # correcttion here, now were using the methods from the new VoiceActivation class
-            if voice_activator.listen_for_wake_word():
-                tts.speak("Yes?")
-                command = voice_activator.listen_for_command()
+            command = voice_activator.start_voice()
 
-                if command is not None:
-                    is_mode_switched = handle_voice_command(command, mode_controller, tts)
+            if command is not None:
+                is_mode_switched = handle_voice_command(command, mode_controller, tts)
 
-                    if not is_mode_switched:
-                        if current_mode == OperatingMode.INTERACTION:
-                            perform_scene_analysis(camera, gemini, tts, interaction_prompt)
-                        elif current_mode == OperatingMode.PATHFINDING:
-                            perform_scene_analysis(camera, gemini, tts, pathfinding_prompt)
+                if not is_mode_switched:
+                    if current_mode == OperatingMode.INTERACTION:
+                        perform_scene_analysis(camera, gemini, tts, interaction_prompt)
+                    elif current_mode == OperatingMode.PATHFINDING:
+                        perform_scene_analysis(camera, gemini, tts, pathfinding_prompt)
                 else:
                     tts.speak("I didn't catch a command.")
 

@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # api key
-google_api_key = os.getenv("google_api_key")
+google_api_key = os.getenv("key")
 
 # camera settings
 camera_index = 0  # 0 for the default camera
