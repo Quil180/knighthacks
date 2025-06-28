@@ -22,35 +22,35 @@ class VoiceActivation:
         # used for recognizing what is said
         r = sr.Recognizer()
         # is the actual microohone input that is used to recognize
-        mic = sr.Microphone()
+        # mic = sr.Microphone()
 
         logger.info("Voice Activation is ready, waiting for wake word '" + wake_word + "'")
+        with sr.Microphone() as mic:
+            while True:
+                try:
+                    r.adjust_for_ambient_noise(mic, duration=adjust_time)
+                    audio = r.listen(mic)
 
-        while True:
-            try:
-                r.adjust_for_ambient_noise(mic, duration=adjust_time)
-                audio = r.listen(mic)
+                    logger.info("Recognizing Words.....")
 
-                logger.info("Recognizing Words.....")
+                    # Sending words to google to beg them to decipher it
+                    words = r.recognize_google(audio)
+                    
+                    # If the wake word is found in the text, say you found it
+                    if wake_word in words.lower():
+                        logger.info("Wake Word found!!!!! 😊")
+                        time.sleep(wake_word_delay)
 
-                # Sending words to google to beg them to decipher it
-                words = r.recognize_google(audio)
-                
-                # If the wake word is found in the text, say you found it
-                if wake_word in words.lower():
-                    logger.info("Wake Word found!!!!! 😊")
-                    time.sleep(wake_word_delay)
+                        # returning the text AFTER the wake word
+                        return words.partition(wake_word)[2].strip()
 
-                    # returning the text AFTER the wake word
-                    return words.partition(wake_word)[2].strip()
-
-            except sr.UnknownValueError:
-                logger.error("Google could not understand audio, try again.")
-            except sr.RequestError as err:
-                logger.error(f"Google request did not go through: {err}")
-            except Exception as err:
-                print(f"Some other error occured: {err}")
-                break # critical failure occured
+                except sr.UnknownValueError:
+                    logger.error("Google could not understand audio, try again.")
+                except sr.RequestError as err:
+                    logger.error(f"Google request did not go through: {err}")
+                except Exception as err:
+                    print(f"Some other error occured: {err}")
+                    break # critical failure occured
 
 # how to use new class
 if __name__ == '__main__':
