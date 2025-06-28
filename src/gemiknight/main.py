@@ -1,71 +1,108 @@
-# main.py
-
 import logging
-from utils.logger import setup_logger  # Sets up the logger first
+import time
+from utils_package.logger import setup_logger
 from config import settings
-from vision.camera import Camera
-from vision.gemini_api import GeminiAPI
-from tts.speech import TTSEngine
+from vision_package.vision.camera import Camera
+from vision_package.vision.gemini_api import GeminiAPI
+from vision_package.vision.response_parser import ResponseParser
+from tts_package.speech import TTSEngine
+from voice_package.voice_activation import VoiceActivation
+from mode_package.mode_control import ModeController, OperatingMode
 
 # Initialize the centralized logger
 logger = logging.getLogger(__name__)
 
-def run_vision_assistance():
+def handle_voice_command(command: str, mode_controller: ModeController, tts: TTSEngine) -> bool:
+    
+    # processes a voice command to check for mode switching.
 
-    # main function to run the complete vision assistance pipeline
+    # command (str): the transcribed voice command.
+    # mode_controller (ModeController): The controller for switching modes.
+    # tts (TTSEngine): The text-to-speech engine for feedback.
 
-    # checks for API Key
-    if not settings.GOOGLE_API_KEY:
-        logger.error("FATAL: GOOGLE_API_KEY is not set in the environment.")
-        print("Error: GOOGLE_API_KEY is not configured. Please check your .env file.")
+    if command and settings.switch_mode_command in command:
+        new_mode = mode_controller.switch_mode()
+        tts.speak(f"Switched to {new_mode.name} mode.")
+        return True
+    return False
+
+def perform_scene_analysis(camera: Camera, gemini: GeminiAPI, tts: TTSEngine, prompt: str):
+
+    # single cycle of capturing, analyzing using a specific prompt, and speaking
+
+    logger.info(f"Starting analysis with prompt: {prompt[:30]}...")
+
+    if "pathfinding" in prompt.lower():
+        tts.speak("Scanning path.")
+    else:
+        tts.speak("Looking closely.")
+
+    image_bytes = camera.capture_jpeg_bytes()
+    if not image_bytes:
+        tts.speak("Error: Failed to capture image.")
+        return
+
+    description = gemini.analyze_image(prompt=prompt, image_bytes=image_bytes)
+    summary = ResponseParser.summarize_text(description)
+    print(f"\n--- AI Description ---\n{summary}\n----------------------\n")
+    tts.speak(summary)
+
+def main():
+
+    # main function to run the complete vision assistance pipeline with mode control
+
+    if not settings.google_api_key:
+        logger.critical("FATAL: GOOGLE_API_KEY is not configured.")
         return
 
     try:
-        # initializes all modules
-        logger.info("Initializing system modules...")
-        camera = Camera(camera_index=settings.CAMERA_INDEX)
-        gemini = GeminiAPI(api_key=settings.GOOGLE_API_KEY, model_name=settings.GEMINI_MODEL_NAME)
-        tts = TTSEngine(rate=settings.TTS_RATE)
+        # intialization
+        camera = Camera(camera_index=settings.camera_index)
+        gemini = GeminiAPI(api_key=settings.google_api_key, model_name=settings.gemini_model_name)
+        tts = TTSEngine(rate=settings.tts_rate)
+        voice_activator = VoiceActivation(wake_word=settings.wake_word)
+        mode_controller = ModeController(initial_mode=OperatingMode.INTERACTION)
 
-        # this is where your main application loop would go!
-        # for this example, we'll simulate a single trigger, like a voice command....
-        input("Press Enter to capture and analyze the scene...") # simulates a trigger
+        tts.speak(f"System ready. Current mode is {mode_controller.mode.name}.")
 
-        # self explanatory.. captures an image
-        logger.info("Capturing image...")
-        tts.speak("Looking now.")
-        image_bytes = camera.capture_jpeg_bytes()
+        # application loop
+        while True:
+            current_mode = mode_controller.mode
+            
+            # listen for the wake word then process command
+            # the mode determines the default action if it's not a mode-switch command
+            print(f"\n[{current_mode.name} MODE] Say '{settings.wake_word}' to issue a command.")
 
-        if not image_bytes:
-            error_message = "Failed to capture image. Please check the camera."
-            logger.error(error_message)
-            tts.speak(error_message)
-            return
+            if voice_activator.listen_for_wake_word():
+                tts.speak("Yes?")
+                command = voice_activator.listen_for_command()
 
-        # 4. analyze the image with Gemini
-        logger.info("Analyzing image with Gemini...")
-        description = gemini.analyze_image(
-            prompt=settings.ASSISTIVE_PROMPT,
-            image_bytes=image_bytes
-        )
+                # check for a mode switch command first
+                is_mode_switched = handle_voice_command(command, mode_controller, tts)
 
-        # 5. outputs the result!
-        print("\n--- Scene Description ---")
-        print(description)
-        print("-------------------------\n")
-        tts.speak(description)
+                # if the mode was not switched, perform the default action for the current mode
+                if not is_mode_switched:
+                    if current_mode == OperatingMode.INTERACTION:
+                        if command: # requires a specific command like "what do you see"
+                            perform_scene_analysis(camera, gemini, tts, settings.interaction_prompt)
+                        else:
+                            tts.speak("I didn't catch a command.")
+                    
+                    elif current_mode == OperatingMode.PATHFINDING:
+                        # in pathfinding, any command that isn't a mode switch triggers a scan
+                        perform_scene_analysis(camera, gemini, tts, settings.pathfinding_prompt)
 
-    except IOError as e:
-        logger.error(f"Camera hardware error: {e}")
-        print(f"A camera error occurred: {e}")
+            # this is the "continuous" part of pathfinding, if no wake word, it will loop
+            # to make it auto-scan, you'd add a non-blocking listener or threading
+            # pathfinding is also triggered to ensure consistency for this logic
+
+    except KeyboardInterrupt:
+        logger.info("Shutdown requested by user.")
     except Exception as e:
         logger.critical(f"An unhandled error occurred in the main loop: {e}", exc_info=True)
-        print(f"A critical error occurred. Check logs for details.")
     finally:
-        logger.info("Vision assistance application shutting down.")
-        
-        # the camera is released automatically by its destructor..
-        # but you could add explicit cleanup here if needed.
+        tts.speak("Shutting down.")
+        print("Application shutting down.")
 
 if __name__ == "__main__":
-    run_vision_assistance()
+    main()
