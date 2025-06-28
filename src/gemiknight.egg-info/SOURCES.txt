@@ -1,0 +1,17 @@
+README.md
+pyproject.toml
+src/gemiknight/__init__.py
+src/gemiknight/main.py
+src/gemiknight/settings.py
+src/gemiknight.egg-info/PKG-INFO
+src/gemiknight.egg-info/SOURCES.txt
+src/gemiknight.egg-info/dependency_links.txt
+src/gemiknight.egg-info/top_level.txt
+src/gemiknight/tts-package/__init__.py
+src/gemiknight/tts-package/speech.py
+src/gemiknight/utils-package/__init__.py
+src/gemiknight/utils-package/logger.py
+src/gemiknight/vision-package/main.py
+src/gemiknight/vision-package/vision/__init__.py
+src/gemiknight/vision-package/vision/camera.py
+src/gemiknight/vision-package/vision/gemini.py
