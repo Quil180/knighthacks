@@ -7,7 +7,7 @@ adjust_time     = 0.5 # assumed to be per second
 wake_word       = "hey gemini"
 wake_word_delay = 1
 
-logger = logging.getLogger(__name__)
+logger = log.getLogger(__name__)
 
 def start_voice():
     # Listen for a wak word of choice and then respondssss
