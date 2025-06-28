@@ -47,8 +47,7 @@ class VoiceActivation:
                     if "switch mode" in words.lower():
                         log.info("Switch Mode Word found!!!!!")
                         time.sleep(wake_word_delay)
-                        # switch mode here somehow
-                        return None
+                        return "Switch"
 
                 except sr.UnknownValueError:
                     log.error("Google could not understand audio, try again.")

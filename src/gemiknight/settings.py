@@ -11,7 +11,7 @@ google_api_key = os.getenv("key")
 camera_index = 0  # 0 for the default camera
 
 # api settings 
-gemini_model_name = "gemini-pro-vision"
+gemini_model_name = "gemini-1.5-flash"
 
 # prompts
 

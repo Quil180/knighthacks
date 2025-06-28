@@ -14,7 +14,9 @@ logger = logging.getLogger(__name__)
 
 def handle_voice_command(command: str, mode_controller: ModeController, tts: TTSEngine) -> bool:
     # processes a voice command to check for mode switching.
-    if command and switch_mode_command in command:
+
+    # switch mode command
+    if command == "Switch":
         new_mode = mode_controller.switch_mode()
         tts.speak(f"Switched to {new_mode.name} mode.")
         return True
@@ -72,8 +74,8 @@ def main():
                         perform_scene_analysis(camera, gemini, tts, interaction_prompt)
                     elif current_mode == OperatingMode.PATHFINDING:
                         perform_scene_analysis(camera, gemini, tts, pathfinding_prompt)
-                else:
-                    tts.speak("I didn't catch a command.")
+                    else:
+                        tts.speak("I didn't catch a command.")
 
     except KeyboardInterrupt:
         logger.info("Shutdown requested by user.")
