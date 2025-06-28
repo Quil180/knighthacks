@@ -4,3 +4,9 @@ src/gemiknight.egg-info
 *.xcuserstate
 build/lib/gemiknight
 src/gemiknight/voice_package/__pycache__
+src/gemiknight/__pycache__
+src/gemiknight/mode_package/__pycache__
+src/gemiknight/tts_package/__pycache__
+src/gemiknight/utils_package/__pycache__
+src/gemiknight/vision_package/__pycache__
+uv.lock
