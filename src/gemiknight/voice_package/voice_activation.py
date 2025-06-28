@@ -1,7 +1,7 @@
 import speech_recognition as sr
 import time
 import logging as log # for logging/debugging
-from settings import wake_word
+from gemiknight.settings import wake_word
 
 
 DEBUG_VOICE     = 0 # Debug Prints?
@@ -21,38 +21,36 @@ class VoiceActivation:
         
         # used for recognizing what is said
         r = sr.Recognizer()
-        # is the actual microohone input that is used to recognize
+        # is the actual microohone input that is used to recognize'
         # mic = sr.Microphone()
 
         logger.info("Voice Activation is ready, waiting for wake word '" + wake_word + "'")
+
         with sr.Microphone() as mic:
             while True:
                 try:
                     r.adjust_for_ambient_noise(mic, duration=adjust_time)
                     audio = r.listen(mic)
 
-                    log.info("Recognizing Words.....")
+                    logger.info("Recognizing Words.....")
 
                     # Sending words to google to beg them to decipher it
                     words = r.recognize_google(audio)
                     
                     # If the wake word is found in the text, say you found it
                     if wake_word in words.lower():
-                        log.info("Wake Word found!!!!! 😊")
+                        logger.info("Wake Word found!!!!! 😊")
                         time.sleep(wake_word_delay)
 
                         # returning the text AFTER the wake word
                         return words.partition(wake_word)[2].strip()
-
-                    if "switch mode" in words.lower():
-                        log.info("Switch Mode Word found!!!!!")
-                        time.sleep(wake_word_delay)
-                        return "Switch"
+                        # returning the text AFTER the wake word
+                        return words.partition(wake_word)[2].strip()
 
                 except sr.UnknownValueError:
-                    log.error("Google could not understand audio, try again.")
+                    logger.error("Google could not understand audio, try again.")
                 except sr.RequestError as err:
-                    log.error(f"Google request did not go through: {err}")
+                    logger.error(f"Google request did not go through: {err}")
                 except Exception as err:
                     print(f"Some other error occured: {err}")
                     break # critical failure occured
