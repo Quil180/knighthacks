@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GemiVision</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Cal+Sans&family=Montserrat:ital@0;1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="containertwo">
+        <h1>Gemivision</h1>
+        <img src="{{ url_for('static', filename='star.png') }}" width="40" height="40" class="star-img">
+    </div>
+    <div class="container">
+        <div class="video-section">
+            <h3>Camera Feed</h3>
+            <img src="{{ url_for('video_feed') }}" width="640" height="480" class="camera-img">
+             <div class="b1">
+                <button>Option 1</button>
+                <button margin-left="20px">Option 2</button>
+             </div>
+        </div>
+        <div class="log-section">
+            <h2>Logs</h2>
+            <div id="logOutput"></div>
+        </div>
+    </div>
+
+    <script>
+    function loadLogs() {
+        fetch('/logs')
+            .then(response => response.text())
+            .then(data => {
+                const logDiv = document.getElementById('logOutput');
+                logDiv.innerHTML = data;
+                logDiv.scrollTop = logDiv.scrollHeight;  // auto-scroll to bottom
+            });
+    }
+
+    setInterval(loadLogs, 5000);
+    loadLogs();
+    </script>
+
+</body>
+</html>
