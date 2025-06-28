@@ -1,13 +1,16 @@
 import logging
 import time
-from utils_package.logger import setup_logger
-from settings import tts_rate, wake_word, switch_mode_command, interaction_prompt, pathfinding_prompt, camera_index, google_api_key, gemini_model_name
-from vision_package.camera import Camera
-from vision_package.gemini import GeminiAPI
-from vision_package.response_parser import ResponseParser
-from tts_package.speech import TTSEngine
-from voice_package.voice_activation import VoiceActivation # corrected class name
-from mode_package.mode_control import ModeController, OperatingMode
+#from gemiknight.utils_package.logger import setup_logger
+from gemiknight.settings import tts_rate, wake_word, switch_mode_command, interaction_prompt, pathfinding_prompt, camera_index, google_api_key, gemini_model_name
+from gemiknight.vision_package.camera import Camera
+from gemiknight.vision_package.gemini import GeminiAPI
+from gemiknight.vision_package.response_parser import ResponseParser
+from gemiknight.tts_package.speech import TTSEngine
+from gemiknight.voice_package.voice_activation import VoiceActivation # corrected class name
+from gemiknight.mode_package.mode_control import ModeController, OperatingMode
+from threading import Thread
+from gemiknight.gui_package import gui_output
+
 
 # initialize the centralized logger
 logger = logging.getLogger(__name__)
@@ -39,13 +42,21 @@ def perform_scene_analysis(camera: Camera, gemini: GeminiAPI, tts: TTSEngine, pr
     description = gemini.analyze_image(prompt=prompt, image_bytes=image_bytes)
     summary = ResponseParser.summarize_text(description)
     print(f"\n--- AI Description ---\n{summary}\n----------------------\n")
+    gui_output.latest_summary = summary
     tts.speak(summary)
+
 
 def main():
     # main function to run the complete vision assistance pipeline with mode control
+    def run_gui():
+        gui_output.app.run(debug=True, use_reloader=False)
+
+    Thread(target=run_gui, daemon=True).start()
+
     if not google_api_key:
         logger.critical("FATAL: GOOGLE_API_KEY is not configured.")
         return
+
 
     try:
         # initialization

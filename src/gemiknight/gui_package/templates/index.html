@@ -21,23 +21,20 @@
         </div>
         <div class="log-section">
             <h2>Logs</h2>
-            <div id="logOutput"></div>
+            <div id="summaryOutput"></div>
         </div>
     </div>
 
     <script>
-    function loadLogs() {
-        fetch('/logs')
-            .then(response => response.text())
-            .then(data => {
-                const logDiv = document.getElementById('logOutput');
-                logDiv.innerHTML = data;
-                logDiv.scrollTop = logDiv.scrollHeight;  // auto-scroll to bottom
-            });
-    }
-
-    setInterval(loadLogs, 5000);
-    loadLogs();
+        function loadSummary() {
+            fetch('/summary')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('summaryOutput').innerHTML = data;
+                });
+        }
+        setInterval(loadSummary, 5000);
+        loadSummary();
     </script>
 
 </body>
