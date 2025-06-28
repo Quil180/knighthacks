@@ -1,0 +1,24 @@
+img {
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+  max-width: 1000px;
+  height: auto;
+  border-radius: 50px;
+  border: 10px solid white;
+}
+
+h1 {
+  display: block;
+  margin: 0 auto;
+  width: max-content;
+  color: #ffffff;
+  font-size: 72px;
+  font-family: 'Montserat', sans-serif;
+}
+
+body {
+  background-color: #212f43; 
+}
+
+

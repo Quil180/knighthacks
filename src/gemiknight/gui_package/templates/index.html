@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html>  
 <head>
     <title>Flask OpenCV Stream</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Patrick+Hand&family=Rubik+Bubbles&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Live Video Feed</h1>
-    <img src="{{ url_for('video_feed') }}" alt="Live Feed" style="max-width:none; max-height:none;">
+    <h1>Live Video Feed style</h1>
+    <img src="{{ url_for('video_feed') }}">
 </body>
 </html>
