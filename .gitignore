@@ -3,3 +3,4 @@ src/gemiknight.egg-info
 *.xcworkspacedata
 *.xcuserstate
 build/lib/gemiknight
+src/gemiknight/voice_package/__pycache__
