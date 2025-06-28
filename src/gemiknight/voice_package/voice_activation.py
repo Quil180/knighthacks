@@ -1,16 +1,21 @@
 import speech_recognition as sr
 import time
 import logging as log # for logging/debugging
+from settings import wake_word
+
 
 DEBUG_VOICE     = 0 # Debug Prints?
 adjust_time     = 0.5 # assumed to be per second
-wake_word       = "hey gemini"
 wake_word_delay = 1
 
 # renamed to avoid conflict with the 'log' module alias
 logger = log.getLogger(__name__)
 
-class VoiceRecognition:
+class VoiceActivation:
+    # Constructor for thingy
+    def __init__(self, wake_word: str):
+        self.wake_word = wake_word
+
     def start_voice(self):
         # Listen for a wak word of choice and then respondssss
         
@@ -50,7 +55,7 @@ class VoiceRecognition:
 # how to use new class
 if __name__ == '__main__':
     # create an instance of the class
-    voice_processor = VoiceRecognition()
+    voice_processor = VoiceActivation(wake_word)
 
     # call the method to start listening
     command = voice_processor.start_voice()
