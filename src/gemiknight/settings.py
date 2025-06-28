@@ -27,8 +27,20 @@ assistive_prompt = (
     "'Two people are in front of you. One is slightly to the left and smiling.' "
     "'One person is standing directly ahead. They appear neutral.' "
     "'Three people are visible. One on the left is smiling, the others look neutral.'"
-)
+    )
+
+switch_mode_command = "Switch mode"
+
+wake_word  = "Hello Gemini"
+
+interaction_prompt = (
+    ""
+    )
+
+pathfinding_prompt = (
+    ""
+    )
 
 # tts settings
 # we can add TTS-specific settings here if needed, like speech rate or volume, but I dont want to do that right now
-TTS_RATE = 150
+tts_rate = 150

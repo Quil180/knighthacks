@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 class ResponseParser:
 
     # parses and formats responses from the Gemini API
-    |
+    
     @staticmethod
     def summarize_text(text: str) -> str:
 
