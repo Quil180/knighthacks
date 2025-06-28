@@ -6,7 +6,7 @@ load_dotenv()
 
 # api key and settings
 # loads the API key from environment variables
-google_api_key = os.getenv("google_api_key")
+google_api_key = os.getenv("key")
 
 # camera settings 
 camera_index = 0  # 0 for the default camera
