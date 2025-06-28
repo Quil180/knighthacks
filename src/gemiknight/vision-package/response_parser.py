@@ -3,9 +3,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 class ResponseParser:
-    """
-    Parses and formats responses from the Gemini API.
-    """
+
+    # parses and formats responses from the Gemini API
+    |
     @staticmethod
     def summarize_text(text: str) -> str:
 
@@ -13,7 +13,6 @@ class ResponseParser:
         # this function performs basic cleaning for now
         # we can expand it to extract key entities or summarize longer descriptions.
 
-        Args:
         # text (str): the raw text output from the Gemini API
 
         # str: cleeeaned humannn readable text description
