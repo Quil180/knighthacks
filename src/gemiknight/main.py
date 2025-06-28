@@ -1,5 +1,6 @@
 import logging
 import time
+from datetime import datetime
 # FIX: Re-enable the logger setup and call the function.
 from gemiknight.utils_package.logger import setup_logger
 from gemiknight.settings import tts_rate, wake_word, switch_mode_command, interaction_prompt, pathfinding_prompt, camera_index, google_api_key, gemini_model_name
@@ -18,11 +19,20 @@ setup_logger()
 # initialize the centralized logger
 logger = logging.getLogger(__name__)
 
+def print_gui(output: str):
+    timestamp = datetime.now().strftime("%H:%M:%S")
+    entry = f"[{timestamp}] {output}"
+    gui_output.summary_history.append(output)
+    # limit to last 50 summaries
+    if len(gui_output.summary_history) > 50:
+        gui_output.summary_history.pop(0)
+
 def handle_voice_command(command: str, mode_controller: ModeController, tts: TTSEngine) -> bool:
     # processes a voice command to check for mode switching.
     # switch mode command
     if command == "Switch":
         new_mode = mode_controller.switch_mode()
+        print_gui(f"Switched to {new_mode.name} mode.")
         tts.speak(f"Switched to {new_mode.name} mode.")
         return True
     return False
@@ -32,12 +42,15 @@ def perform_scene_analysis(camera: Camera, gemini: GeminiAPI, tts: TTSEngine, pr
     logger.info(f"Starting analysis with prompt: {prompt[:30]}...")
 
     if "pathfinding" in prompt.lower():
+        print_gui("Scanning path.")
         tts.speak("Scanning path.")
     else:
+        print_gui("Looking closely.")
         tts.speak("Looking closely.")
 
     image_bytes = camera.capture_jpeg_bytes()
     if not image_bytes:
+        print_gui("Error: Failed to capture image.")
         tts.speak("Error: Failed to capture image.")
         return
 
@@ -45,7 +58,7 @@ def perform_scene_analysis(camera: Camera, gemini: GeminiAPI, tts: TTSEngine, pr
     summary = ResponseParser.summarize_text(description)
     print(f"\n--- AI Description ---\n{summary}\n----------------------\n")
     # this line correctly updates the summary for the GUI
-    gui_output.latest_summary = summary
+    print_gui(summary)
     tts.speak(summary)
 
 def main():
@@ -69,6 +82,7 @@ def main():
         voice_activator = VoiceActivation(wake_word=wake_word)
         mode_controller = ModeController(initial_mode=OperatingMode.INTERACTION)
 
+        print_gui(f"System ready. Current mode is {mode_controller.mode.name}.")
         tts.speak(f"System ready. Current mode is {mode_controller.mode.name}.")
 
         # application loop
@@ -95,6 +109,7 @@ def main():
     except Exception as e:
         logger.critical(f"An unhandled error occurred in the main loop: {e}", exc_info=True)
     finally:
+        print_gui("Shutting down")
         tts.speak("Shutting down.")
         print("Application shutting down.")
 

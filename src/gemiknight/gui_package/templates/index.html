@@ -15,8 +15,8 @@
             <h3>Camera Feed</h3>
             <img src="{{ url_for('video_feed') }}" width="640" height="480" class="camera-img">
              <div class="b1">
-                <button>Option 1</button>
-                <button margin-left="20px">Option 2</button>
+                <button onclick="handleOption('option1')">Hey Gemini</button>
+                <button margin-left="20px" onclick="onclick=handleOption('option2')">Switch Mode</button>
              </div>
         </div>
         <div class="log-section">
@@ -25,17 +25,22 @@
         </div>
     </div>
 
-    <script>
-        function loadSummary() {
-            fetch('/summary')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('summaryOutput').innerHTML = data;
-                });
-        }
-        setInterval(loadSummary, 5000);
-        loadSummary();
-    </script>
+<script>
+    function loadSummary() {
+        fetch('/summary')
+            .then(response => response.text())
+            .then(data => {
+                const summaryDiv = document.getElementById('summaryOutput');
+                summaryDiv.innerHTML = data;
+
+                // Auto-scroll to bottom
+                summaryDiv.scrollTop = summaryDiv.scrollHeight;
+            });
+    }
+
+    setInterval(loadSummary, 5000);
+    loadSummary();
+</script>
 
 </body>
 </html>

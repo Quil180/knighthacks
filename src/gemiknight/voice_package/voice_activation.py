@@ -1,7 +1,7 @@
 import speech_recognition as sr
 import time
 import logging as log # for logging/debugging
-from settings import wake_word
+from gemiknight.settings import wake_word
 
 
 DEBUG_VOICE     = 0 # Debug Prints?
