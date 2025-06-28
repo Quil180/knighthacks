@@ -12,6 +12,9 @@ let
     google-generativeai
     pyttsx3
     flask
+    python-dotenv
+    opencv-python
+    pillow
     uv # We can include uv here if you still want to use it manually
   ]);
 
@@ -34,7 +37,7 @@ pkgs.mkShell {
   ];
 
   shellHook = ''
-    echo "✅ Nix environment is ready."
+    echo "Nix environment is ready."
     echo "Python packages including pyaudio, flask, etc., are available."
 
     # The 'pip install -e .' command is for an "editable" install of your
@@ -44,5 +47,7 @@ pkgs.mkShell {
 
     echo "Building the Repo..."
     uv pip install -e .
+    cd src/gemiknight
+    python main.py
   '';
 }
