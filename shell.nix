@@ -30,10 +30,14 @@ pkgs.mkShell {
     # 2. System-level dependency for 'pyaudio'.
     #    pyaudio is a C-extension that wraps PortAudio.
     portaudio
+    pipewire
+    espeak
 
     # 3. Corrected typo for 'pkg-config'.
     #    This is a helper tool for build scripts to find libraries.
     pkg-config
+
+
   ];
 
   shellHook = ''
