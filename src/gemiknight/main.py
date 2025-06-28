@@ -1,11 +1,11 @@
 # main.py
 
 import logging
-from utils.logger import setup_logger  # Sets up the logger first
-from config import settings
-from vision.camera import Camera
-from vision.gemini_api import GeminiAPI
-from tts.speech import TTSEngine
+from gemiknight.utils_package.logger import setup_logger  # Sets up the logger first
+from gemiknight import settings
+from gemiknight.vision_package.camera import Camera
+from gemiknight.vision_package.gemini import GeminiAPI
+from gemiknight.tts_package.speech import TTSEngine
 
 # Initialize the centralized logger
 logger = logging.getLogger(__name__)
