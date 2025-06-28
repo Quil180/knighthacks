@@ -35,7 +35,7 @@ def start_voice():
                 time.sleep(wake_word_delay)
 
                 # returning whole words list
-                return words.partition(wake_word)
+                return (words.partition(wake_word)).text
 
         except sr.UnknownValueError:
             log.error("Google could not understand audio, try again.")
