@@ -42,10 +42,8 @@ class VoiceActivation:
                         logger.info("Wake Word found!!!!! 😊")
                         time.sleep(wake_word_delay)
 
-                        # returning the text AFTER the wake word
-                        return words.partition(wake_word)[2].strip()
-                        # returning the text AFTER the wake word
-                        return words.partition(wake_word)[2].strip()
+                    # returning the text AFTER the wake word
+                    return words.partition(wake_word)[2].strip()
 
                 except sr.UnknownValueError:
                     logger.error("Google could not understand audio, try again.")
