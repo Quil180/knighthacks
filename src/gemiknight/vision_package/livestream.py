@@ -1,4 +1,4 @@
-from camera import Camera
+from gemiknight.vision_package.camera import Camera
 
 camera = Camera(0)
 
