@@ -1,12 +1,14 @@
+# gemiknight/gui_package/gui_output.py
+
 from flask import Flask, Response, render_template
-from gemiknight.vision_package.livestream import generate_video_stream
-from gemiknight.gui_package.logger_setup import logger, log_stream
-
-
+# FIX: Removed 'gemiknight.' prefix
+from vision_package.livestream import generate_video_stream
+# FIX: Changed to a relative import '.' since it's in the same package
+from .logger_setup import logger, log_stream
 
 app = Flask(__name__)
 
-latest_summary = "No summary yet." 
+latest_summary = "No summary yet."
 
 @app.route('/')
 def index():
@@ -22,7 +24,6 @@ def video_feed():
 @app.route('/summary')
 def show_summary():
     return f"<div style='background:#f4f4f4; padding:10px;'>{latest_summary}</div>"
-
 
 if __name__ == '__main__':
     logger.info("webpage started")
