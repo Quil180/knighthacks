@@ -1,131 +1,82 @@
-.camera-img {
-  display: block;
-  margin-left: 10px;
-  width: auto;
-  height: 480px;
-  border-radius: 50px;
-  border: 8px solid #597296;
-}
-
-.star-img{
-  margin-left: 167px;
-  margin-top: 5px;
-}
-
-h1 {
-  position: absolute;
-  top: 10px;
-  left: 20px;
-  margin: 0;
-  z-index: 1000;
-  color: #ffffff;
-  font-size: 24px;
-  font-family: "Roboto Mono", monospace;
-}
-
-h2 {
-  display: block;
-  margin-left: 175px;
-  color: #ffffff;
-  font-size: 48px;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 400;
-  margin-top: 105px;
-}
-
-h3 {
-  display: block;
-  margin-left: 20px;
-  margin-top: 100px;
-  color: #ffffff;
-  font-size: 48px;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 400;
-  margin-top: 70px;
-}
-
-button {
-  width: 150px;
-  height: 75px;
-  border-radius: 10px;
-  background-color: white;
-  margin-left: 20px;
-  font-size: 20px;
-}
-
-button:hover {
-  background-color: #a5aeba;
-}
-
-html{
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-body {
-  background-color: #212f43;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-.color-block {
-    background-color: #597296; /* Light teal */
-    padding: 20px;
-    border-radius: 8px;
-    margin: 20px 0;
-}
-
-
-.container {
-    display: flex;
-    gap: 5px;
-    height: 100vh;
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
     font-family: "Montserrat", sans-serif;
+    background-color: #212f43;
 }
 
 .containertwo {
     display: flex;
     align-items: center;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 1000;
-    gap: 10px; /* space between h1 and image */
+    padding: 10px 20px;
+    position: relative;
+    z-index: 10;
 }
 
-.heading-with-button {
+.star-img {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+}
+
+h1 {
+    color: #ffffff;
+    font-size: 24px;
+    font-family: "Roboto Mono", monospace;
+    margin: 0;
+}
+
+/* Main layout with responsive flex */
+.container {
     display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-
+/* Camera section styling */
 .video-section {
-  margin-top: 30px;
-  flex: 1;
+    flex: 1 1 50%;
+    min-width: 320px;
 }
 
+h3 {
+    color: #ffffff;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.camera-img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    border: 5px solid #597296;
+}
+
+/* Log section styling */
 .log-section {
-    flex: 1;
-    background-color: #597296; 
-    height: 100%;
-    border-radius: 4px;
-    margin-left: 20px;
+    flex: 1 1 40%;
+    min-width: 300px;
+    background-color: #597296;
+    border-radius: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h2 {
+    color: #ffffff;
+    font-size: 32px;
+    margin-bottom: 10px;
 }
 
 #summaryOutput {
-    margin-top: 30px;
     background: #f4f4f4;
-    padding: 10px;
-    height: 480px;
-    margin-left: 20px;
-    max-width: 400px;
-    overflow-y: scroll;
-    border-radius: 50px;
-    border: 10px solid #212f43;
+    padding: 15px;
+    height: 400px;
+    overflow-y: auto;
+    border-radius: 20px;
+    border: 5px solid #212f43;
 }
 
-.b1 {
-  margin-left: 525px;
-  margin-top: 20px;
-  display: flex;
-}
