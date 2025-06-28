@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gemiknight"
+version = "0.1.0"
+authors = [
+  { name="Yousef Awad", email="yousef@ucf.edu" },
+  { name="Peyton Barnes", email="peyton.barnes@ucf.edu" },
+  { name="Tino Hernandez", email="tino@ucf.edu" },
+  { name="Rafeed Khan", email="rafeed@ucf.edu" },
+]
+description = "A small example package made for the Gemiknight's Summer 2025 Hackathon"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Quil180/knighthacks"
+"Bug Tracker" = "https://github.com/Quil180/knighthacks/issues"
+
