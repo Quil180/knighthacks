@@ -23,7 +23,7 @@ def view_logs():
     log_stream.seek(0)  # Rewind
     log_contents = log_stream.read().replace('\n', '<br>')
     logger.debug("Log view requested.")
-    return f"<h2>Logs</h2><div style='background:#f4f4f4; padding:10px;'>{log_contents}</div>"
+    return f"<div style='background:#f4f4f4; padding:10px;'>{log_contents}</div>"
 
 def periodic_logger():
     while True:
