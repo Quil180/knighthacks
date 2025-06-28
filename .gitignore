@@ -2,3 +2,4 @@ dist
 src/gemiknight.egg-info
 *.xcworkspacedata
 *.xcuserstate
+build/lib/gemiknight
