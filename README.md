@@ -1,4 +1,4 @@
-# knighthacks
+# Thingy
 
 A Python-based assistive application for visually impaired users, leveraging Google's Gemini Vision AI, camera input, and text-to-speech. This project captures images from a camera, analyzes the scene (focusing on people and their expressions), and speaks a concise description aloud.
 
