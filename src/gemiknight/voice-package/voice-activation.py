@@ -30,7 +30,7 @@ def start_voice():
             words = r.recognize_google(audio)
             
             # If the wake word is found in the text, say you found it
-            if wake_word in word.lower():
+            if wake_word in words.lower():
                 log.info("Wake Word found!!!!! 😊")
                 time.sleep(wake_word_delay)
 
