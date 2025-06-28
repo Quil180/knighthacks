@@ -29,8 +29,3 @@ def show_summary():
             {history_html}
         </div>
     """
-
-
-if __name__ == '__main__':
-    logger.info("webpage started")
-    app.run(debug=True)
