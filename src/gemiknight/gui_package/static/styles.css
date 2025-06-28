@@ -1,24 +1,132 @@
-img {
+.camera-img {
   display: block;
-  margin: 0 auto;
-  margin-top: 20px;
-  max-width: 1000px;
-  height: auto;
+  margin-left: 10px;
+  width: auto;
+  height: 480px;
   border-radius: 50px;
-  border: 10px solid white;
+  border: 8px solid #597296;
+}
+
+.star-img{
+  margin-left: 167px;
+  margin-top: 5px;
 }
 
 h1 {
-  display: block;
-  margin: 0 auto;
-  width: max-content;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  margin: 0;
+  z-index: 1000;
   color: #ffffff;
-  font-size: 72px;
-  font-family: 'Montserat', sans-serif;
+  font-size: 24px;
+  font-family: "Roboto Mono", monospace;
 }
 
+h2 {
+  display: block;
+  margin-left: 175px;
+  color: #ffffff;
+  font-size: 48px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  margin-top: 105px;
+}
+
+h3 {
+  display: block;
+  margin-left: 20px;
+  margin-top: 100px;
+  color: #ffffff;
+  font-size: 48px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  margin-top: 70px;
+}
+
+button {
+  width: 150px;
+  height: 75px;
+  border-radius: 10px;
+  background-color: white;
+  margin-left: 20px;
+  font-size: 20px;
+}
+
+button:hover {
+  background-color: #a5aeba;
+}
+
+html{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 body {
-  background-color: #212f43; 
+  background-color: #212f43;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.color-block {
+    background-color: #597296; /* Light teal */
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
 }
 
 
+.container {
+    display: flex;
+    gap: 5px;
+    height: 100vh;
+    font-family: "Montserrat", sans-serif;
+}
+
+.containertwo {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+    gap: 10px; /* space between h1 and image */
+}
+
+.heading-with-button {
+    display: flex;
+}
+
+
+.video-section {
+  margin-top: 30px;
+  flex: 1;
+}
+
+.log-section {
+    flex: 1;
+    background-color: #597296; 
+    height: 100%;
+    border-radius: 4px;
+    margin-left: 20px;
+}
+
+#logOutput {
+    margin-top: 30px;
+    background: #f4f4f4;
+    padding: 10px;
+    height: 480px;
+    margin-left: 20px;
+    max-width: 400px;
+    overflow-y: scroll;
+    border-radius: 50px;
+    border: 10px solid #212f43;
+    margin-top: 20px;
+}
+
+.b1 {
+  margin-left: 525px;
+  margin-top: 20px;
+  display: flex;
+}
