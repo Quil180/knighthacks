@@ -39,6 +39,11 @@ A Python-based assistive application for visually impaired users, leveraging Goo
      ```bash
      nix-shell
      ```
+   - If you do not use Nix:
+     ```bash
+     pip install speechrecognition pyaudio google-generativeai pyttsx3 flask dotenv opencv-python pillow
+     python src/gemiknight/main.py
+     ```
 
 3. **Configure your API key:**
    - Edit the `.env` file in the project root:
