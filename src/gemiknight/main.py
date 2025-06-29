@@ -19,8 +19,16 @@ def handle_voice_command(command: str, mode_controller: ModeController, tts: TTS
     # processes a voice command to check for mode switching.
 
     # switch mode command
-    if command == "Switch":
-        new_mode = mode_controller.switch_mode()
+    if command == "Interaction":
+        new_mode = mode_controller.switch_mode(1)
+        tts.speak(f"Switched to {new_mode.name} mode.")
+        return True
+    if command == "Pathing":
+        new_mode = mode_controller.switch_mode(2)
+        tts.speak(f"Switched to {new_mode.name} mode.")
+        return True
+    if command == "Freeform":
+        new_mode = mode_controller.switch_mode(3)
         tts.speak(f"Switched to {new_mode.name} mode.")
         return True
     return False
@@ -85,6 +93,8 @@ def main():
                         perform_scene_analysis(camera, gemini, tts, interaction_prompt)
                     elif current_mode == OperatingMode.PATHFINDING:
                         perform_scene_analysis(camera, gemini, tts, pathfinding_prompt)
+                    elif current_mode == OperatingMode.FREEFORM:
+                        perform_scene_analysis(camera, gemini, tts, command)
                     else:
                         tts.speak("I didn't catch a command.")
 

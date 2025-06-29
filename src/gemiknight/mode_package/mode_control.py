@@ -13,6 +13,7 @@ class OperatingMode(Enum):
 
     PATHFINDING = auto()
     INTERACTION = auto()
+    FREEFORM = auto()
 
 class ModeController:
 
@@ -28,12 +29,16 @@ class ModeController:
         # Returns the current operating mode."""
         return self._current_mode
 
-    def switch_mode(self):
+    def switch_mode(self, mode: int):
         # Toggles between the available modes."""
-        if self._current_mode == OperatingMode.INTERACTION:
-            self._current_mode = OperatingMode.PATHFINDING
-        else:
+        if mode == 1:
             self._current_mode = OperatingMode.INTERACTION
+        elif mode == 2:
+            self._current_mode = OperatingMode.PATHFINDING
+        elif mode == 3:
+            self._current_mode = OperationMode.FREEFORM
+        else:
+            self._current_mode = self._current_mode
         
         logger.info(f"Switched to '{self._current_mode.name}' mode.")
         return self._current_mode
