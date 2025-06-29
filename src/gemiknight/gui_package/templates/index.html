@@ -28,9 +28,6 @@
             .then(data => {
                 const summaryDiv = document.getElementById('summaryOutput');
                 summaryDiv.innerHTML = data;
-
-                // Auto-scroll to bottom
-                summaryDiv.scrollTop = summaryDiv.scrollHeight;
             });
     }
 

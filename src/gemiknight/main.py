@@ -1,7 +1,6 @@
-# gemiknight/main.py
-
 import logging
 import time
+from datetime import datetime
 # FIX: The logger must be set up to see debug messages.
 from gemiknight.utils_package.logger import setup_logger
 from gemiknight.settings import tts_rate, wake_word, switch_mode_command, interaction_prompt, pathfinding_prompt, freeform_prompt, camera_index, google_api_key, gemini_model_name
@@ -30,14 +29,17 @@ def handle_voice_command(command: str, mode_controller: ModeController, tts: TTS
     # (This function is correct and requires no changes)
     if command == "Interaction":
         new_mode = mode_controller.switch_mode(1)
+        print_gui(f"Switched to {new_mode.name} mode.")
         tts.speak(f"Switched to {new_mode.name} mode.")
         return True
     if command == "Pathing":
         new_mode = mode_controller.switch_mode(2)
+        print_gui(f"Switched to {new_mode.name} mode.")
         tts.speak(f"Switched to {new_mode.name} mode.")
         return True
     if command == "Freeform":
         new_mode = mode_controller.switch_mode(3)
+        print_gui(f"Switched to {new_mode.name} mode.")
         tts.speak(f"Switched to {new_mode.name} mode.")
         return True
     return False
@@ -79,6 +81,7 @@ def main():
         tts = TTSEngine(rate=tts_rate)
         voice_activator = VoiceActivation(wake_word=wake_word)
         mode_controller = ModeController(initial_mode=OperatingMode.INTERACTION)
+        print_gui(f"System ready. Current mode is {mode_controller.mode.name}.")
         tts.speak(f"System ready. Current mode is {mode_controller.mode.name}.")
 
         while True:

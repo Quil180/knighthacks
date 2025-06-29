@@ -3,7 +3,7 @@ html, body {
     padding: 0;
     height: 100%;
     font-family: "Montserrat", sans-serif;
-    background-color: #212f43;
+    background-color: #5c4374;
 }
 
 .containertwo {
@@ -52,17 +52,18 @@ h3 {
     width: 100%;
     height: auto;
     border-radius: 20px;
-    border: 5px solid #597296;
+    border: 5px solid #b18fd1;
 }
 
 /* Log section styling */
 .log-section {
     flex: 1 1 40%;
     min-width: 300px;
-    background-color: #597296;
+    background-color: #b18fd1;
     border-radius: 20px;
     padding: 20px;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 
 h2 {
@@ -77,6 +78,6 @@ h2 {
     height: 400px;
     overflow-y: auto;
     border-radius: 20px;
-    border: 5px solid #212f43;
+    border: 5px solid #5c4374;
 }
 
