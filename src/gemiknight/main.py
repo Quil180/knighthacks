@@ -18,6 +18,14 @@ from gemiknight.gui_package import gui_output
 setup_logger()
 logger = logging.getLogger(__name__)
 
+def print_gui(output: str):
+    timestamp = datetime.now().strftime("%H:%M:%S")
+    entry = f"[{timestamp}] {output}"
+    gui_output.summary_history.append(output)
+    # limit to last 50 summaries
+    if len(gui_output.summary_history) > 50:
+        gui_output.summary_history.pop(0)
+
 def handle_voice_command(command: str, mode_controller: ModeController, tts: TTSEngine) -> bool:
     # (This function is correct and requires no changes)
     if command == "Interaction":
@@ -38,22 +46,27 @@ def perform_scene_analysis(camera: Camera, gemini: GeminiAPI, tts: TTSEngine, pr
     # (This function is correct and requires no changes)
     logger.info(f"Starting analysis with prompt: {prompt[:30]}...")
     if "pathfinding" in prompt.lower():
+        print_gui("Scanning path.")
         tts.speak("Scanning path.")
     else:
+        print_gui("Looking closely.")
         tts.speak("Looking closely.")
     image_bytes = camera.capture_jpeg_bytes()
     if not image_bytes:
+        print_gui("Error: Failed to capture image.")
         tts.speak("Error: Failed to capture image.")
         return
     description = gemini.analyze_image(prompt=prompt, image_bytes=image_bytes)
     summary = ResponseParser.summarize_text(description)
     print(f"\n--- AI Description ---\n{summary}\n----------------------\n")
-    gui_output.latest_summary = summary
+    # this line correctly updates the summary for the GUI
+    print_gui(summary)
     tts.speak(summary)
 
 def main():
     # (GUI setup and initialization are correct)
     def run_gui():
+        # this will run the Flask app in a separate thread
         gui_output.app.run(debug=True, use_reloader=False)
     Thread(target=run_gui, daemon=True).start()
     if not google_api_key:
@@ -98,6 +111,7 @@ def main():
     except Exception as e:
         logger.critical(f"An unhandled error occurred in the main loop: {e}", exc_info=True)
     finally:
+        print_gui("Shutting down")
         tts.speak("Shutting down.")
         print("Application shutting down.")
 

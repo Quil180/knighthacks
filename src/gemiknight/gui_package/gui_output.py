@@ -6,7 +6,7 @@ from gemiknight.gui_package.logger_setup import logger, log_stream
 
 app = Flask(__name__)
 
-latest_summary = "No summary yet." 
+summary_history = []
 
 @app.route('/')
 def index():
@@ -21,9 +21,11 @@ def video_feed():
 
 @app.route('/summary')
 def show_summary():
-    return f"<div style='background:#f4f4f4; padding:10px;'>{latest_summary}</div>"
-
-
-if __name__ == '__main__':
-    logger.info("webpage started")
-    app.run(debug=True)
+    history_html = "<br><hr><br>".join(
+        f"<div class='summary-block'>{s}</div>" for s in (summary_history)
+    )
+    return f"""
+        <div id='summary-container' style='background:#f4f4f4; padding:10px; height:400px; overflow-y:auto;'>
+            {history_html}
+        </div>
+    """

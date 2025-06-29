@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>GemiVision</title>
+    <title>KnightVision</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Cal+Sans&family=Montserrat:ital@0;1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="containertwo">
-        <h1>Gemivision</h1>
+        <h1>KnightVision</h1>
         <img src="{{ url_for('static', filename='star.png') }}" width="40" height="40" class="star-img">
     </div>
     <div class="container">
         <div class="video-section">
             <h3>Camera Feed</h3>
             <img src="{{ url_for('video_feed') }}" width="640" height="480" class="camera-img">
-             <div class="b1">
-                <button>Option 1</button>
-                <button margin-left="20px">Option 2</button>
-             </div>
         </div>
         <div class="log-section">
             <h2>Logs</h2>
@@ -25,17 +21,22 @@
         </div>
     </div>
 
-    <script>
-        function loadSummary() {
-            fetch('/summary')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('summaryOutput').innerHTML = data;
-                });
-        }
-        setInterval(loadSummary, 5000);
-        loadSummary();
-    </script>
+<script>
+    function loadSummary() {
+        fetch('/summary')
+            .then(response => response.text())
+            .then(data => {
+                const summaryDiv = document.getElementById('summaryOutput');
+                summaryDiv.innerHTML = data;
+
+                // Auto-scroll to bottom
+                summaryDiv.scrollTop = summaryDiv.scrollHeight;
+            });
+    }
+
+    setInterval(loadSummary, 5000);
+    loadSummary();
+</script>
 
 </body>
 </html>
