@@ -1,66 +1,42 @@
+# gemiknight/settings.py
+
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# load environment variables from .env file
 load_dotenv()
 
-# api key
+# api key and settings
 google_api_key = os.getenv("key")
-
-# camera settings
-camera_index = 0  # 0 for the default camera
-
-# api settings 
+camera_index = 0
 gemini_model_name = "gemini-1.5-flash"
 
-# prompts
+# --- Voice Activation Settings ---
+wake_word = "hey gemini"
+# This is no longer used by the new main.py but is kept for reference
+switch_mode_command = "switch mode"
 
-# pathing mode
-pathfinding_prompt = (
-    "You are an advanced AI navigation assistant for a visually impaired user. Your ONLY goal is to analyze the image from their camera and provide a two-part response to ensure their immediate safety and clear path. Your response must strictly follow this format:\n\n"
-    "1. Observation: In one very short sentence, describe the most immediate object, obstacle, or pathway directly in front of the user.\n"
-    "2. Action: In one short, direct command, tell the user the single next physical action to take.\n\n"
-    "--- RULES FOR YOUR RESPONSE: ---\n"
-    "* Be Extremely Concise: The user's safety depends on quick, clear information.\n"
-    "* Prioritize Safety: Always identify the most immediate potential hazard first.\n"
-    "* Give a Natural-Language Command: The 'Action' should be a full sentence that is easy to understand and follow, describing the next immediate step. For example: 'Veer slightly to your left to avoid the puddle.'\n"
-    "* Give a Single, Immediate Command: Do not give multi-step directions. The user will get a new instruction on the next loop.\n\n"
-    "--- EXAMPLES OF CORRECT OUTPUT: ---\n"
-    "* Input Image: A low curb is on the sidewalk ahead.\n"
-    "    * Your Output:\n"
-    "        Observation: There is a curb one step ahead.\n"
-    "        Action: Step up to get onto the sidewalk.\n\n"
-    "* Input Image: An office chair is directly in the path.\n"
-    "    * Your Output:\n"
-    "        Observation: A chair is directly in your path.\n"
-    "        Action: Turn slightly to your right to pass it.\n\n"
-    "* Input Image: An open hallway with no obstacles.\n"
-    "    * Your Output:\n"
-    "        Observation: The path ahead is clear.\n"
-    "        Action: Continue walking forward.\n\n"
-    "* Input Image: A person is walking directly toward the you.\n"
-    "    * Your Output:\n"
-    "        Observation: A person is approaching.\n"
-    "        Action: Stop for a moment to let them pass.\n\n"
-    "--- \n"
-    "Analyze the user's camera feed and generate the Observation and Action for their next immediate move."
-)
-
-# interaction mode
+# --- Prompts ---
 interaction_prompt = (
     "You are an AI assistant for a visually impaired user in interaction mode. "
-    "Your goal is to provide a detailed social and object-oriented summary of the scene. "
-    "Structure your response clearly:\n\n"
-    "1. People: State the number of people visible. Describe their approximate distance, posture (sitting/standing), and general mood from their expression.\n"
-    "2. Objects: Identify any notable objects in the scene, especially items people are holding or things on tables.\n"
-    "3. Text: If you see any readable text on signs, products, or screens, quote it exactly.\n\n"
-    "Example: 'There are two people. One person is sitting at a table 5 feet away, looking at a laptop. The other is standing by the window, smiling. On the table, there is a laptop and a red coffee mug. A sign on the wall says: 'Quiet Zone'.'"
+    "Your goal is to provide a detailed social and object-oriented summary of the scene in a single, conversational paragraph, always starting with a friendly greeting like 'Hello!'. "
+    "Describe the number of people, their distance and mood, any objects they are holding, and quote any text you can read. "
+    "Never use formatting like lists or bold text. Never address the person in the camera as 'you'.\n"
+    "Example: 'Hello! I can see one person sitting at a table about 5 feet away, looking at a laptop.'"
 )
 
-# -voice activation word
-wake_word = "hey gemini"
+pathfinding_prompt = (
+    "You are an AI navigation assistant for a visually impaired user. Your goal is to provide a clear, conversational paragraph to guide their next move, always starting with a friendly 'Hello!'. "
+    "First, describe the overall scene, then identify immediate obstacles, and conclude with a clear, conversational instruction for their next action. "
+    "Never use formatting like lists or bold text.\n"
+    "Example: 'Hello! It looks like you're in an office hallway, and I see a rolling chair directly in your path. I would suggest you step slightly to your right to go around it.'"
+)
 
-switch_mode_command = "switch mode"
+freeform_prompt = (
+    "You are a helpful AI assistant in freeform mode. "
+    "The user has a question about what they are looking at. "
+    "Begin your response with a friendly 'Hello!' and provide a direct and helpful answer to their question based on what you see in the camera feed."
+)
 
 # tts settings
 tts_rate = 160
