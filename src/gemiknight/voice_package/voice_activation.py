@@ -3,68 +3,56 @@ import time
 import logging as log # for logging/debugging
 from gemiknight.settings import wake_word
 
-
-DEBUG_VOICE     = 0 # Debug Prints?
-adjust_time     = 0.5 # assumed to be per second
-wake_word_delay = 1
-
-# renamed to avoid conflict with the 'log' module alias
 logger = log.getLogger(__name__)
 
 class VoiceActivation:
-    # Constructor for thingy
+    # Constructor
     def __init__(self, wake_word: str):
-        self.wake_word = wake_word
+        self.wake_word = wake_word.lower()
+        self.r = sr.Recognizer()
+        # Calibrate once for efficiency
+        with sr.Microphone() as source:
+            logger.info("Calibrating for ambient noise...")
+            self.r.adjust_for_ambient_noise(source, duration=0.5)
+            logger.info("Calibration complete.")
 
     def start_voice(self):
-        # Listen for a wak word of choice and then respondssss
-        
-        # used for recognizing what is said
-        r = sr.Recognizer()
-        # is the actual microohone input that is used to recognize
-        # mic = sr.Microphone()
-
-        logger.info("Voice Activation is ready, waiting for wake word '" + wake_word + "'")
+        # Listen for a wake word or command
+        logger.info("Listening...")
         with sr.Microphone() as mic:
-            while True:
-                try:
-                    r.adjust_for_ambient_noise(mic, duration=adjust_time)
-                    audio = r.listen(mic)
+            try:
+                # This logic is now correctly inside the 'try' block
+                audio = self.r.listen(mic)
+                logger.info("Recognizing Words.....")
+                words = self.r.recognize_google(audio).lower()
 
-                    log.info("Recognizing Words.....")
+                # Add this debug line to always see what Google heard
+                logger.info(f"Google recognized: '{words}'")
 
-                    # Sending words to google to beg them to decipher it
-                    words = r.recognize_google(audio)
-                    
-                    # If the wake word is found in the text, say you found it
-                    if wake_word in words.lower():
-                        log.info("Wake Word found!!!!! 😊")
-                        time.sleep(wake_word_delay)
+                # --- THE FIX ---
+                # Check for single words OR longer phrases for each mode.
+                if "interaction" in words:
+                    logger.info("Interaction mode command detected!")
+                    return "Interaction"
 
-                        # returning the text AFTER the wake word
-                        return words.partition(wake_word)[2].strip()
+                if "pathing" in words or "passing" in words:
+                    logger.info("Pathing mode command detected!")
+                    return "Pathing"
+                
+                if "freeform" in words:
+                    logger.info("Freeform mode command detected!")
+                    return "Freeform"
+                
+                # Fallback to the general wake word
+                if self.wake_word in words:
+                    logger.info("Wake Word found!!!!! 😊")
+                    return words.partition(self.wake_word)[2].strip()
 
-                    if "switch mode" in words.lower():
-                        log.info("Switch Mode Word found!!!!!")
-                        time.sleep(wake_word_delay)
-                        return "Switch"
-
-                except sr.UnknownValueError:
-                    log.error("Google could not understand audio, try again.")
-                except sr.RequestError as err:
-                    log.error(f"Google request did not go through: {err}")
-                except Exception as err:
-                    print(f"Some other error occured: {err}")
-                    break # critical failure occured
-
-# how to use new class
-if __name__ == '__main__':
-    # create an instance of the class
-    voice_processor = VoiceActivation(wake_word)
-
-    # call the method to start listening
-    command = voice_processor.start_voice()
-
-    # print the result after the wake word is found
-    if command:
-        print(f"\nCommand Captured: '{command}'")
+            except sr.UnknownValueError:
+                logger.error("Google could not understand audio, try again.")
+            except sr.RequestError as err:
+                logger.error(f"Google request did not go through: {err}")
+            except Exception as err:
+                print(f"Some other error occured: {err}")
+        
+        return None

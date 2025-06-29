@@ -22,22 +22,16 @@ in
 pkgs.mkShell {
   # Use 'buildInputs' for dependencies needed to build and run your code.
   buildInputs = with pkgs; [
-    # 1. The full Python environment defined above.
-    #    This provides python, pip, and all the libraries you listed.
-    #    Crucially, it includes the development headers (like Python.h).
     pythonEnv
 
-    # 2. System-level dependency for 'pyaudio'.
-    #    pyaudio is a C-extension that wraps PortAudio.
+    python3
     portaudio
     pipewire
     espeak
-
-    # 3. Corrected typo for 'pkg-config'.
-    #    This is a helper tool for build scripts to find libraries.
     pkg-config
-
-
+    uv
+    
+    glibc
   ];
 
   shellHook = ''
@@ -47,11 +41,13 @@ pkgs.mkShell {
     # The 'pip install -e .' command is for an "editable" install of your
     # local project. The Nix equivalent is to add the current directory
     # to the Python path.
-    export PYTHONPATH="$PWD:$PYTHONPATH"
+    # export PYTHONPATH="$PWD:$PYTHONPATH"
 
     echo "Building the Repo..."
-    uv pip install -e .
-    cd src/gemiknight
-    python main.py
+    uv venv
+    source .venv/bin/activate
+    # uv pip install speechrecognition pyaudio google-generativeai pyttsx3 flask dotenv opencv-python pillow
+    uv run src/gemiknight/main.py
+    rm -rf .venv
   '';
 }
