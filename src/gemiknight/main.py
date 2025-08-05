@@ -1,9 +1,18 @@
 import logging
-import time
 from datetime import datetime
+
 # FIX: The logger must be set up to see debug messages.
 from gemiknight.utils_package.logger import setup_logger
-from gemiknight.settings import tts_rate, wake_word, switch_mode_command, interaction_prompt, pathfinding_prompt, freeform_prompt, camera_index, google_api_key, gemini_model_name
+from gemiknight.settings import (
+    tts_rate,
+    wake_word,
+    interaction_prompt,
+    pathfinding_prompt,
+    freeform_prompt,
+    camera_index,
+    google_api_key,
+    gemini_model_name,
+)
 from gemiknight.vision_package.camera import Camera
 from gemiknight.vision_package.gemini import GeminiAPI
 from gemiknight.vision_package.response_parser import ResponseParser
@@ -17,6 +26,7 @@ from gemiknight.gui_package import gui_output
 setup_logger()
 logger = logging.getLogger(__name__)
 
+
 def print_gui(output: str):
     timestamp = datetime.now().strftime("%H:%M:%S")
     entry = f"[{timestamp}] {output}"
@@ -25,7 +35,10 @@ def print_gui(output: str):
     if len(gui_output.summary_history) > 50:
         gui_output.summary_history.pop(0)
 
-def handle_voice_command(command: str, mode_controller: ModeController, tts: TTSEngine) -> bool:
+
+def handle_voice_command(
+    command: str, mode_controller: ModeController, tts: TTSEngine
+) -> bool:
     # (This function is correct and requires no changes)
     if command == "Interaction":
         new_mode = mode_controller.switch_mode(1)
@@ -44,7 +57,10 @@ def handle_voice_command(command: str, mode_controller: ModeController, tts: TTS
         return True
     return False
 
-def perform_scene_analysis(camera: Camera, gemini: GeminiAPI, tts: TTSEngine, prompt: str):
+
+def perform_scene_analysis(
+    camera: Camera, gemini: GeminiAPI, tts: TTSEngine, prompt: str
+):
     # (This function is correct and requires no changes)
     logger.info(f"Starting analysis with prompt: {prompt[:30]}...")
     if "pathfinding" in prompt.lower():
@@ -65,11 +81,13 @@ def perform_scene_analysis(camera: Camera, gemini: GeminiAPI, tts: TTSEngine, pr
     print_gui(summary)
     tts.speak(summary)
 
+
 def main():
     # (GUI setup and initialization are correct)
     def run_gui():
         # this will run the Flask app in a separate thread
         gui_output.app.run(debug=True, use_reloader=False)
+
     Thread(target=run_gui, daemon=True).start()
     if not google_api_key:
         logger.critical("FATAL: GOOGLE_API_KEY is not configured.")
@@ -101,22 +119,30 @@ def main():
                     elif current_mode == OperatingMode.FREEFORM:
                         # FIX: Combine the user's command with the freeform prompt
                         # This tells the AI its role AND gives it the user's specific question.
-                        if command: # Make sure the command isn't empty
-                             full_prompt = f"{freeform_prompt} The user's question is: '{command}'"
-                             perform_scene_analysis(camera, gemini, tts, full_prompt)
+                        if command:  # Make sure the command isn't empty
+                            full_prompt = (
+                                f"{freeform_prompt} The user's question is: '{command}'"
+                            )
+                            perform_scene_analysis(camera, gemini, tts, full_prompt)
                         else:
-                             tts.speak("Please ask a question after the wake word in freeform mode.")
+                            tts.speak(
+                                "Please ask a question after the wake word in freeform mode."
+                            )
             else:
                 logger.info("No command was understood.")
 
     except KeyboardInterrupt:
         logger.info("Shutdown requested by user.")
     except Exception as e:
-        logger.critical(f"An unhandled error occurred in the main loop: {e}", exc_info=True)
+        logger.critical(
+            f"An unhandled error occurred in the main loop: {e}", exc_info=True
+        )
     finally:
         print_gui("Shutting down")
         tts.speak("Shutting down.")
         print("Application shutting down.")
 
+
 if __name__ == "__main__":
     main()
+

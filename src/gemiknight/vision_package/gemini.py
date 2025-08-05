@@ -5,8 +5,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class GeminiAPI:
 
+class GeminiAPI:
     # wrapper for google gemini vision API
 
     def __init__(self, api_key: str, model_name: str):
@@ -18,7 +18,7 @@ class GeminiAPI:
 
         if not api_key:
             raise ValueError("Google API key is missing.")
-        
+
         try:
             genai.configure(api_key=api_key)
             self.model = genai.GenerativeModel(model_name)
@@ -28,7 +28,6 @@ class GeminiAPI:
             raise
 
     def analyze_image(self, prompt: str, image_bytes: bytes) -> str:
-
         # sends an image and a prompt to the Gemini API for analysis
 
         # prompt (str): The text prompt to guide the analysis
@@ -41,7 +40,7 @@ class GeminiAPI:
             return "Cannot analyze as no image was provided."
 
         image_part = {"mime_type": "image/jpeg", "data": image_bytes}
-        
+
         try:
             logger.info("Sending request to Gemini API...")
             response = self.model.generate_content([prompt, image_part])
@@ -49,3 +48,4 @@ class GeminiAPI:
         except Exception as e:
             logger.error(f"Gemini API call failed: {e}")
             return f"Sorry, I could not analyze the image. Error: {e}"
+
