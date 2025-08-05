@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 
 # FIX: The logger must be set up to see debug messages.
 from gemiknight.utils_package.logger import setup_logger
@@ -28,8 +27,6 @@ logger = logging.getLogger(__name__)
 
 
 def print_gui(output: str):
-    timestamp = datetime.now().strftime("%H:%M:%S")
-    entry = f"[{timestamp}] {output}"
     gui_output.summary_history.append(output)
     # limit to last 50 summaries
     if len(gui_output.summary_history) > 50:
