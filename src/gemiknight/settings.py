@@ -40,3 +40,4 @@ freeform_prompt = (
 
 # tts settings
 tts_rate = 160
+

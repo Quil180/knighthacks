@@ -1,9 +1,9 @@
 import speech_recognition as sr
-import time
-import logging as log # for logging/debugging
+import logging as log  # for logging/debugging
 from gemiknight.settings import wake_word
 
 logger = log.getLogger(__name__)
+
 
 class VoiceActivation:
     # Constructor
@@ -38,11 +38,11 @@ class VoiceActivation:
                 if "pathing" in words or "passing" in words:
                     logger.info("Pathing mode command detected!")
                     return "Pathing"
-                
+
                 if "freeform" in words:
                     logger.info("Freeform mode command detected!")
                     return "Freeform"
-                
+
                 # Fallback to the general wake word
                 if self.wake_word in words:
                     logger.info("Wake Word found!!!!! 😊")
@@ -54,5 +54,6 @@ class VoiceActivation:
                 logger.error(f"Google request did not go through: {err}")
             except Exception as err:
                 print(f"Some other error occured: {err}")
-        
+
         return None
+

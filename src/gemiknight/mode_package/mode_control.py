@@ -5,11 +5,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class OperatingMode(Enum):
     # defines the three possible operating modes for the device.
     INTERACTION = auto()
     PATHFINDING = auto()
     FREEFORM = auto()
+
 
 class ModeController:
     # manages the operational mode of the assistive device.
@@ -34,6 +36,7 @@ class ModeController:
             self._current_mode = OperatingMode.FREEFORM
         else:
             logger.warning(f"Attempted to switch to an invalid mode ID: {mode_id}")
-        
+
         logger.info(f"Switched to '{self._current_mode.name}' mode.")
         return self._current_mode
+

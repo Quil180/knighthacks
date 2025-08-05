@@ -5,12 +5,12 @@ from io import BytesIO
 
 logger = logging.getLogger(__name__)
 
-class Camera:
 
+class Camera:
     # Handles all camera operations using OpenCV.
 
     def __init__(self, camera_index: int):
-        #Initializes the camera.
+        # Initializes the camera.
 
         # camera_index (int): The index of the camera device.
 
@@ -22,9 +22,8 @@ class Camera:
         logger.info(f"Camera at index {camera_index} initialized.")
 
     def capture_jpeg_bytes(self) -> bytes:
-
         # captures a single frame, converts it to RGB, and encodes it as JPEG bytes.
-   
+
         # bytes: The JPEG-encoded image data, or None if capture fails.
 
         ret, frame = self.camera.read()
@@ -42,7 +41,7 @@ class Camera:
             return buffer.getvalue()
 
     def release(self):
-        # releases the camera source 
+        # releases the camera source
         if self.camera.isOpened():
             self.camera.release()
             logger.info("Camera released.")
@@ -50,3 +49,4 @@ class Camera:
     def __del__(self):
         # makes sure the camera is released when the object is destroyed
         self.release()
+
